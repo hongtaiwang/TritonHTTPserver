@@ -29,7 +29,7 @@ class MyServer:
         try:
             (act, url, version) = firstline.split()
         except ValueError:
-            return "400malform"
+            return '400malform'
         info = {'act': act, 'url': url, 'version': version}
         for h in headers:
             h = h.split(': ')
@@ -110,11 +110,19 @@ if __name__ == '__main__':
     input_doc_root = sys.argv[2]
     server = MyServer(input_port, input_doc_root)
     # Add code to start your server here
+    threads = []
     while True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((server.host, server.port))
             s.listen()
             conn, addr = s.accept()
             s.settimeout(5)
-            t = threading.Thread(target=createsocket(conn, addr), args=(conn, addr)).start()
+            t = threading.Thread(target=createsocket(conn, addr), args=(conn, addr))
+            t.start()
+            threads.append(t)
+
+            for t in threads:
+                t.join()
+
+
 
