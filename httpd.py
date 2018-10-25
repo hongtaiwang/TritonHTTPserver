@@ -43,7 +43,7 @@ class MyServer:
         path = ''
         x = url.split('/')
         i = 0
-        while (i < len(x)):
+        while i < len(x):
             if '' in x:
                 x.remove('')
             if i < 0 or x[0] == '..':  # path escape from file root
@@ -60,7 +60,7 @@ class MyServer:
         for d in range(len(x)):
             path = path + '/' + x[d]
         info['url'] = os.path.realpath(self.doc_root + path)
-        print(info)
+        # print(info)
         return info
 
     # generate response
@@ -91,7 +91,7 @@ class MyServer:
 
 def createsocket(conn, addr):
     with conn:
-        print('Connected by', addr)
+        # print('Connected by', addr)
         while True:
             req = conn.recv(1024).decode()
             if not req:
@@ -99,7 +99,7 @@ def createsocket(conn, addr):
             info = server.req_info(req)
             msg = server.res_gen(info).encode()
             conn.sendall(msg)
-            print("msg send finished")
+            # print("msg send finished")
             # msg = server.res_close.encode()
             # conn.sengall(msg)
             break
